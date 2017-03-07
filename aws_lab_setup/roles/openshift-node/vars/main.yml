@@ -1,0 +1,1 @@
+docker_storage_dev_name: "{{ hostvars[inventory_hostname]['docker_storage_dev_name'] }}"

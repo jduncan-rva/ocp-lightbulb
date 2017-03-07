@@ -1,0 +1,32 @@
+- name: Include Red Hat tasks
+  include: "{{ ansible_os_family }}.yml"
+  static: no
+  when: ansible_os_family == 'RedHat'
+
+- name: add ssh key to authorized_keys
+  authorized_key:
+    user: root
+    state: present
+    key: "{{ lookup('file', ssh_key + '.pub') }}"
+
+- name: gather ec2 facts
+  ec2_facts: 
+
+# - name: Configure sshd and sudoers
+#   lineinfile:
+#     dest: "{{ item.dest }}"
+#     regexp: "{{ item.regexp }}"
+#     line: "{{ item.line }}"
+#     state: "{{ item.state | default('present') }}"
+#     validate: "{{ item.validate | default(omit) }}"
+#     backup: no
+#   with_items: "{{ common_node_config_options }}"
+#   notify: restart ssh
+#   tags:
+#     - ssh
+#     - sudo
+#     - common
+#
+# - meta: flush_handlers
+#   tags:
+#     - common

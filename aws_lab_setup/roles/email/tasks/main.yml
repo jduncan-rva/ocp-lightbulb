@@ -1,0 +1,23 @@
+- name: Send email to students with inventroy attached
+  delegate_to: localhost
+  sendgrid:
+    username: "{{ sendgrid_user | default(omit) }}"
+    password: "{{ sendgrid_pass | default(omit) }}"
+    api_key: "{{ sendgrid_api_key | default(omit) }}"
+    subject: "[OpenShift] Important Training Details"
+    body: |
+          <h2>OpenShift Lab Details</h2>
+          <p>Attached please find your OpenShift lab details.</p>
+          <p>You can access Openshift by browsing to https://{{ hostvars[groups['openshift_master'][0]]['ansible_ec2_public_hostname']  }}:8443.<br/>
+          You can access the system with the admin:admin username and password.</p>
+          <p>If you have any issues connecting, please reply to this email to let me know.</p>
+
+    to_addresses: "{{ item.email }}"
+    html_body: yes
+    from_address: "{{ instructor_email }}"
+    # attachments:
+    #   - "{{ item.username }}-instances.txt"
+  with_items: "{{ users }}"
+  when: email
+  tags:
+    - email

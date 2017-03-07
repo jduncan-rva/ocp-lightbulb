@@ -1,0 +1,4 @@
+# control_node_inventory_path: ~{{ username }}/lightbulb/lessons/lab_inventory/
+# control_node_install_ansible: yes
+
+htpasswd_file: /etc/origin/master/openshift_htpasswd

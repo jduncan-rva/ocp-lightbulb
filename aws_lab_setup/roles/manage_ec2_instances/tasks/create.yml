@@ -1,0 +1,54 @@
+?ansibl- name: Wait for instances to finish initializing
+  pause:
+    seconds: 90
+  when: instances | changed
+  tags:
+    - always
+    - provision
+
+- name: Add hosts to openshift_master groups
+  add_host:
+    name: "{{ item.invocation.module_args.instance_tags.Name }}"
+    ansible_host: "{{ item.tagged_instances[0].public_ip }}"
+    ansible_user: "{{ ec2_login_names[item.item.1.type] }}"
+    ansible_port: "{{ ssh_port }}"
+    groups: lab_hosts,openshift_masters,{{ item.invocation.module_args.instance_tags.User }}
+  with_items: "{{ instances.results }}"
+  when: "'master' in item.invocation.module_args.instance_tags.Name"
+  changed_when: no
+  tags:
+    - always
+    - provision
+
+- name: Add hosts to node groups
+  add_host:
+    name: "{{ item.invocation.module_args.instance_tags.Name }}"
+    ansible_host: "{{ item.tagged_instances[0].public_ip }}"
+    ansible_user: "{{ ec2_login_names[item.item.1.type] }}"
+    ansible_port: "{{ ssh_port }}"
+    groups: lab_hosts,openshift_nodes
+  with_items: "{{ instances.results }}"
+  when: "'node' in item.invocation.module_args.instance_tags.Name"
+  changed_when: no
+  tags:
+    - always
+    - provision
+
+- name: Generate student inventories
+  template:
+    src: instances.txt.j2
+    dest: ./{{ item.username }}-instances.txt
+  with_items: "{{ users }}"
+  tags:
+    - inventory
+    - users
+    - user_accounts
+
+- name: Generate instructor inventory
+  template:
+    src: instructor_inventory.j2
+    dest: ./instructor_inventory.txt
+  tags:
+    - inventory
+    - users
+    - user_accounts

@@ -1,0 +1,6 @@
+firewall_name: firewalld
+common_ssh_service_name: sshd
+rhsm_repos:
+  - rhel-7-server-rpms
+  - rhel-7-server-extras-rpms
+  - rhel-7-server-ose-3.3-rpms

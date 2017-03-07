@@ -1,0 +1,15 @@
+# - name: Create docker-storage-setup file
+#   template:
+#     src: docker-storage-setup.j2
+#     dest: /etc/sysconfig/docker-storage-setup
+#     owner: root
+#     group: root
+#
+# - name: docker storage setup
+#   command: docker-storage-setup
+#
+# - name: start docker
+#   service:
+#     name: docker
+#     state: started
+#     enabled: yes

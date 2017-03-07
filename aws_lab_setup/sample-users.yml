@@ -1,0 +1,12 @@
+users:
+  - name: Jamie Duncan
+    username: jduncan
+    email: jduncan@redhat.com
+  # - name: Tariq Islam
+  #   username: tislam
+  #   email: tislam@redhat.com
+  # - name: Evong Nahm
+  #   username: enahm@redhat.com
+  # - name: John Osborne
+  #   username: josborne
+  #   email: josborne@redhat.com

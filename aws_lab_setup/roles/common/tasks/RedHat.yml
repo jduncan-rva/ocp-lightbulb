@@ -1,0 +1,108 @@
+- name: RHEL | Set version specific variables
+  include_vars: "{{ ansible_os_family }}-{{ ansible_distribution_major_version }}.yml"
+  tags:
+    - always
+
+# - name: RHEL | Install {{ firewall_name }} and libselinux-python
+#   yum:
+#     name:
+#       - libselinux-python
+#       - "{{ firewall_name }}"
+#     state: present
+#   tags:
+#     - common
+#
+# - name: RHEL | Disable SELinux
+#   selinux:
+#     state: permissive
+#     policy: targeted
+#   register: selinux_disable
+#   notify:
+#     - reboot
+#     - wait for instance
+#   tags:
+#     - common
+#
+# - name: RHEL | Stop and disable firewall
+#   service:
+#     name: "{{ firewall_name }}"
+#     state: stopped
+#   tags:
+#     - common
+
+- name: Register system with RHSM
+  redhat_subscription:
+    state: present
+    username: "{{ rhn_user }}"
+    password: "{{ rhn_pass }}"
+    force_register: yes
+  tags:
+    - common
+
+- name: attach a valid subscription pool
+  command: subscription-manager attach --pool={{ rhsm_pool_id }}
+  tags:
+    - common
+
+- name: remove all subscriptions
+  command: subscription-manager repos --disable=\*
+
+- name: subscribe to the proper repos for OpenShift
+  command: subscription-manager repos --enable={{ item }}
+  with_items: "{{ rhsm_repos }}"
+  tags:
+    - common
+
+- name: Install OCP pre-requisite packages
+  yum:
+    name:
+      - git
+      - vim-enhanced
+      - wget
+      - net-tools
+      - bind-utils
+      - iptables-services
+      - bash-completion
+      - atomic-openshift-excluder
+      - atomic-openshift-docker-excluder
+      - httpd-tools
+    state: latest
+  tags:
+    - common
+
+- name: install docker and ocp-specific utils
+  yum:
+    name:
+      - docker
+      - atomic-openshift-utils
+    state: latest
+  tags: common
+
+# - name: update system
+#   yum:
+#     name: '*'
+#     state: latest
+#   tags:
+#     - common
+
+- name: Create docker-storage-setup file
+  template:
+    src: docker-storage-setup.j2
+    dest: /etc/sysconfig/docker-storage-setup
+    owner: root
+    group: root
+  tags:
+    - common
+    - docker
+
+- name: docker storage setup
+  command: docker-storage-setup
+
+- name: start docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+  tags:
+    - common
+    - docker

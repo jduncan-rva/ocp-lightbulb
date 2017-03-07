@@ -1,0 +1,45 @@
+- name: create private key on host
+  copy:
+    src: "{{ ssh_key }}"
+    dest: /root/.ssh/id_rsa
+    owner: root
+    group: root
+    mode: 0400
+
+- name: deploy ocp install template
+  template:
+    src: ocp-install.yml.j2
+    dest: /tmp/ocp-install.yml
+  with_items: "{{ users }}"
+
+- name: deploy OpenShift
+  command: atomic-openshift-installer -u -c /tmp/ocp-install.yml install
+
+- name: create htpasswd file
+  template:
+    src: htpasswd
+    dest: "{{ htpasswd_file }}"
+    owner: root
+    group: root
+    mode: 0644
+
+- name: add htpasswd auth method to openshift config
+  lineinfile:
+    regexp: 'DenyAllPasswordIdentityProvider'
+    line: '      kind: HTPasswdPasswordIdentityProvider'
+    dest: /etc/origin/master/master-config.yaml
+
+- name: add htpasswd file reference to openshift config
+  lineinfile:
+    insertafter: '     kind: HTPasswdPasswordIdentityProvider'
+    line: '      file: {{ htpasswd_file }}'
+    dest: /etc/origin/master/master-config.yaml
+
+- name: restart openshift services
+  service:
+    state: restarted
+    name: "{{ item }}"
+  with_items:
+    - atomic-openshift-master.service
+    - atomic-openshift-node-dep.service
+    - atomic-openshift-node.service

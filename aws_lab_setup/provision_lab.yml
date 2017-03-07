@@ -1,0 +1,33 @@
+- name: Create lab instances in AWS
+  hosts: localhost
+  connection: local
+  become: no
+  gather_facts: no
+  roles:
+    - manage_ec2_instances
+
+- name: Configure common options on managed nodes and control nodes
+  hosts: lab_hosts
+  become: yes
+  roles:
+    - common
+
+- name: Configure OCP Nodes
+  hosts: openshift_nodes
+  become: yes
+  roles:
+    - openshift-node
+
+- name: Configure OCP Master node
+  hosts: openshift_master
+  become: yes
+  roles:
+    - openshift-master
+
+- name: Email inventory to students
+  hosts: localhost
+  connection: local
+  become: no
+  gather_facts: no
+  roles:
+    - email
