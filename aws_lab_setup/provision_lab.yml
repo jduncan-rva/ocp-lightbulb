@@ -19,7 +19,7 @@
     - openshift-node
 
 - name: Configure OCP Master node
-  hosts: openshift_master
+  hosts: openshift_masters
   become: yes
   roles:
     - openshift-master

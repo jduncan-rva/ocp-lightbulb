@@ -6,3 +6,5 @@ instructor*
 .vagrant/*
 ansible.cfg
 hosts
+sample_users.yml
+extra-vars.yml
