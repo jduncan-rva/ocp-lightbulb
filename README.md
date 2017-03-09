@@ -40,6 +40,7 @@ admin_password: RedHat01           # Set this to something better if you'd like.
 rhn_user: RHN_USER                 # RHN username to regiser instances with
 rhn_pass: rhn_pass                 # RHN password to register instances with
 ssh_key: /path/to/ssh/key          # private key to put on OCP master. it will assume the public key to add to all hosts will be /the/same/path.pub
+rhsm_pool_id: XXXX-XXXXXXXXXXX     # Red Hat Pool ID to add your nodes to. This must include the OpenShift channels
 ```
 
 ## Amazon Setup
