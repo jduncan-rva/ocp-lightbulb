@@ -5,7 +5,6 @@ ansible_log_path: /tmp/ansible.log
 deployment:
   ansible_ssh_user: root
   hosts:
-{% if ansible_fqdn in groups[item.username + '_masters'] %}
   - ip: {{ hostvars[groups[item.username + '_masters'][0]]['ansible_ec2_local_ipv4'] }}
     hostname: {{ hostvars[groups[item.username + '_masters'][0]]['ansible_ec2_local_hostname'] }}
     public_ip: {{ hostvars[groups[item.username + '_masters'][0]]['ansible_ec2_public_ipv4'] }}
@@ -24,8 +23,6 @@ deployment:
       - node
     containerized: true
     connect_to: {{ hostvars[groups[item.username + '_nodes'][0]]['ansible_ec2_local_ipv4'] }}
-{% endif %}
-{% if ansible_fqdn in groups[item.username + '_nodes'] %}
 {% for host in groups[item.username + '_nodes'][1:] %}
   - ip: {{ hostvars[host]['ansible_ec2_local_ipv4'] }}
     hostname: {{ hostvars[host]['ansible_ec2_local_hostname'] }}
@@ -42,4 +39,3 @@ deployment:
       <variable_name2>: "<value2>"
     node:
       <variable_name1>: "<value1>"
-{% endif %}

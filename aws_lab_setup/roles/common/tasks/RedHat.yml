@@ -3,39 +3,13 @@
   tags:
     - always
 
-# - name: RHEL | Install {{ firewall_name }} and libselinux-python
-#   yum:
-#     name:
-#       - libselinux-python
-#       - "{{ firewall_name }}"
-#     state: present
-#   tags:
-#     - common
-#
-# - name: RHEL | Disable SELinux
-#   selinux:
-#     state: permissive
-#     policy: targeted
-#   register: selinux_disable
-#   notify:
-#     - reboot
-#     - wait for instance
-#   tags:
-#     - common
-#
-# - name: RHEL | Stop and disable firewall
-#   service:
-#     name: "{{ firewall_name }}"
-#     state: stopped
-#   tags:
-#     - common
-
 - name: Register system with RHSM
   redhat_subscription:
     state: present
     username: "{{ rhn_user }}"
     password: "{{ rhn_pass }}"
     force_register: yes
+    autosubscribe: true
   tags:
     - common
 
@@ -78,12 +52,12 @@
     state: latest
   tags: common
 
-# - name: update system
-#   yum:
-#     name: '*'
-#     state: latest
-#   tags:
-#     - common
+- name: update system
+  yum:
+    name: '*'
+    state: latest
+  tags:
+    - common
 
 - name: Create docker-storage-setup file
   template:

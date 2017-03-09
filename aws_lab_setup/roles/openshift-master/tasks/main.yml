@@ -11,6 +11,7 @@
     src: ocp-install.yml.j2
     dest: /tmp/ocp-install.yml
   with_items: "{{ users }}"
+  when: "{{ inventory_hostname in groups[item.username + '_masters'] }}"
 
 - name: deploy OpenShift
   command: atomic-openshift-installer -u -c /tmp/ocp-install.yml install

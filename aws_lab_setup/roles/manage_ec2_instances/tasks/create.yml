@@ -12,13 +12,17 @@
     ansible_host: "{{ item.tagged_instances[0].public_ip }}"
     ansible_user: "{{ ec2_login_names[item.item.1.type] }}"
     ansible_port: "{{ ssh_port }}"
-    groups: lab_hosts,openshift_masters,"{{ item.invocation.module_args.instance_tags.User }}-masters"
+    groups:
+      - lab_hosts
+      - openshift_masters
+      - "{{ item.invocation.module_args.instance_tags.User + '_masters' }}"
   with_items: "{{ instances.results }}"
   when: "'master' in item.invocation.module_args.instance_tags.Name"
   changed_when: no
   tags:
     - always
     - provision
+  register: master_groups
 
 - name: Add hosts to node groups
   add_host:
@@ -26,13 +30,17 @@
     ansible_host: "{{ item.tagged_instances[0].public_ip }}"
     ansible_user: "{{ ec2_login_names[item.item.1.type] }}"
     ansible_port: "{{ ssh_port }}"
-    groups: lab_hosts,openshift_nodes,"{{ item.invocation.module_args.instance_tags.User }}-nodes"
+    groups:
+      - lab_hosts
+      - openshift_nodes
+      - "{{ item.invocation.module_args.instance_tags.User + '_nodes' }}"
   with_items: "{{ instances.results }}"
   when: "'node' in item.invocation.module_args.instance_tags.Name"
   changed_when: no
   tags:
     - always
     - provision
+  register: node_groups
 
 - name: Generate student inventories
   template:
