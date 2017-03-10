@@ -28,19 +28,19 @@ users:
 ### extra_vars.yaml
 
 ```
-ec2_key_name: ansible-lab                # SSH key in AWS to put in all the instances
-ec2_region: us-west-1                 # region where the nodes will live
+workshop_lead: Your Name                             # Name for person running the lab. This will show up in the email
+ec2_key_name: ansible-lab                            # SSH key in AWS to put in all the instances
+ec2_region: us-west-1                                # region where the nodes will live
 ec2_name_prefix: SOME_UUID_FOR_YOUR_WORKSHOP         # name prefix for all the VMs
-ec2_vpc_id: vpc-9fe24af7             # EC2 VPC ID in your region
-ec2_vpc_subnet_id: subnet-90e24af8    # EC2 subnet ID in your VPC
-sendgrid_api_key: 'SENDGRID_API_KEY'           # SendGrid API Key
-instructor_email: 'Your Name <your@email.com>'  # address you want the emails to arrive from
-admin_password: RedHat01           # Set this to something better if you'd like. Defaults to 'LearnAnsible[two digit month][two digit year]', e.g., LearnAnsible0416
-
-rhn_user: RHN_USER                 # RHN username to regiser instances with
-rhn_pass: rhn_pass                 # RHN password to register instances with
-ssh_key: /path/to/ssh/key          # private key to put on OCP master. it will assume the public key to add to all hosts will be /the/same/path.pub
-rhsm_pool_id: XXXX-XXXXXXXXXXX     # Red Hat Pool ID to add your nodes to. This must include the OpenShift channels
+ec2_vpc_id: vpc-9fe24af7                             # EC2 VPC ID in your region
+ec2_vpc_subnet_id: subnet-90e24af8                   # EC2 subnet ID in your VPC
+sendgrid_api_key: 'SENDGRID_API_KEY'                 # SendGrid API Key
+instructor_email: 'Your Name <your@email.com>'       # address you want the emails to arrive from
+admin_password: RedHat01                             # Set this to something better if you'd like. Defaults to 'LearnAnsible[two digit month][two digit year]', e.g., LearnAnsible0416
+rhn_user: RHN_USER                                   # RHN username to regiser instances with
+rhn_pass: rhn_pass                                   # RHN password to register instances with
+ssh_key: /path/to/ssh/key                            # private key to put on OCP master. it will assume the public key to add to all hosts will be /the/same/path.pub
+rhsm_pool_id: XXXX-XXXXXXXXXXX                       # Red Hat Pool ID to add your nodes to. This must include the OpenShift channels
 ```
 
 ## Amazon Setup
