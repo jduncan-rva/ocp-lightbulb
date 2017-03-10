@@ -52,12 +52,12 @@
     state: latest
   tags: common
 
-- name: update system
-  yum:
-    name: '*'
-    state: latest
-  tags:
-    - common
+# - name: update system
+#   yum:
+#     name: '*'
+#     state: latest
+#   tags:
+#     - common
 
 - name: Create docker-storage-setup file
   template:
