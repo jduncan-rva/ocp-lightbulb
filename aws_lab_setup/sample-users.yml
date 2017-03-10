@@ -5,8 +5,9 @@ users:
   - name: Tariq Islam
     username: tislam
     email: tislam@redhat.com
-  # - name: Evong Nahm
-  #   username: enahm@redhat.com
-  # - name: John Osborne
-  #   username: josborne
-  #   email: josborne@redhat.com
+  - name: Evong Nahm
+    username: enahm
+    email: enahm@redhat.com
+  - name: John Osborne
+    username: josborne
+    email: josborne@redhat.com

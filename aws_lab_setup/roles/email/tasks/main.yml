@@ -7,10 +7,14 @@
     subject: "[OpenShift] Important Training Details"
     body: |
           <h2>OpenShift Lab Details</h2>
+          <p>Dear {{ item.name }},</p>
           <p>Attached please find your OpenShift lab details.</p>
-          <p>You can access Openshift by browsing to https://{{ hostvars[groups['openshift_master'][0]]['ansible_ec2_public_hostname']  }}:8443.<br/>
+          <p>You can access Openshift by browsing to https://{{ hostvars[groups[item.username + '_masters'][0]]['ansible_ec2_public_hostname'] }}:8443.<br/>
           You can access the system with the admin:admin username and password.</p>
           <p>If you have any issues connecting, please reply to this email to let me know.</p>
+          <p></p>
+          <p>Sincerely,<br/>
+          {{ workshop_lead }}</p>
 
     to_addresses: "{{ item.email }}"
     html_body: yes
