@@ -42,6 +42,14 @@
     line: '      file: {{ htpasswd_file }}'
     dest: /etc/origin/master/master-config.yaml
 
+- name: give admin user cluster-admin access for OCP
+  command: oadm policy add-cluster-role-to-user cluster-admin admin
+
+- name: create lab user for each student
+  shell: echo {{ lab_user_password }} | htpasswd -i -c {{ htpasswd_file }} {{ item.username }}
+  with_items: "{{ users }}"
+  when: "{{ inventory_hostname in groups[item.username + '_masters'] }}"
+
 - name: setup nip.io domain
   lineinfile:
     regexp: 'subdomain:'

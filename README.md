@@ -66,3 +66,15 @@ The default configuration, ocp-lightbulb uses the _nip.io_ domain for each clust
 Each user's OCP cluster is configured with a subdomain configuration of <INFRA_NODE_IP>.nip.io. Any routes they create will have DNS records of <APP>-<NAMESPACE>.<INFRA_NODE_IP>.nip.io. This should resolve cleanly back to the IP address of the infra node where the router lives.
 
 In short, DNS should _just work_, unless for some reason wherever you are blocks the nip.io domain.
+
+## Users
+
+By default, two users are created
+
+* admin
+
+This user has the password 'admin'. It is given the `cluster-admin` role, which means it is effectively all-powerful in the cluster.
+
+* username
+
+Each student also has a username created that maps to their username value in users.yml. This user is not associated with any roles by default at this point, but is added to the htpasswd file so they can log in.

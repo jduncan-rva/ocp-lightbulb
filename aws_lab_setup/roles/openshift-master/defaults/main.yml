@@ -2,3 +2,4 @@
 # control_node_install_ansible: yes
 
 htpasswd_file: /etc/origin/master/openshift_htpasswd
+lab_user_password: RedHat01
