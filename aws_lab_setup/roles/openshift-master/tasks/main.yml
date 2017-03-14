@@ -45,9 +45,6 @@
 - name: create admin user in htpasswd
   shell: echo {{ admin_user_password }} | htpasswd -i -c {{ htpasswd_file }} admin
 
-- name: give admin user cluster-admin access for OCP
-  command: oadm policy add-cluster-role-to-user cluster-admin admin
-
 - name: create lab user for each student in htpasswd
   shell: echo {{ lab_user_password }} | htpasswd -i -c {{ htpasswd_file }} {{ item.username }}
   with_items: "{{ users }}"
@@ -69,3 +66,6 @@
     - atomic-openshift-master.service
     - atomic-openshift-node-dep.service
     - atomic-openshift-node.service
+
+- name: give admin user cluster-admin access for OCP
+  command: /usr/local/bin/oadm policy add-cluster-role-to-user cluster-admin admin
