@@ -40,6 +40,8 @@
   lineinfile:
     regexp: 'subdomain:'
     line: "  subdomain: '{{ hostvars[groups[item.username + '_nodes'][0]]['ansible_ec2_public_ipv4'] + '.xip.io' }}'"
+  with_items: "{{ users }}"
+  when: "{{ inventory_hostname in groups[item.username + '_masters'] }}"
 
 - name: restart openshift services
   service:
