@@ -41,8 +41,8 @@ rhn_user: RHN_USER                                   # RHN username to regiser i
 rhn_pass: rhn_pass                                   # RHN password to register instances with
 ssh_key: /path/to/ssh/key                            # private key to put on OCP master. it will assume the public key to add to all hosts will be /the/same/path.pub
 rhsm_pool_id: XXXX-XXXXXXXXXXX                       # Red Hat Pool ID to add your nodes to. This must include the OpenShift channels
-lab_user_password: ChangeMe
-admin_user_password: admin
+lab_user_password: ChangeMe                          # Password for student's unique lab user
+admin_user_password: admin                           # Password for admin user
 ```
 
 ## Amazon Setup
