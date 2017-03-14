@@ -54,3 +54,15 @@ $ git clone https://github.com/jduncan-rva/ocp-lightbulb.git
 $ cd ocp-lightbulb
 $ ansible-playbook --private-key ~/path/to/ec2/key -e @extra_vars.yml -e @users.yml aws_lab_setup/provision_lab.yml
 ```
+
+## DNS
+
+The default configuration, ocp-lightbulb uses the _nip.io_ domain for each cluster. Details about the nip.io domain are available at http://nip.io/.
+
+### tl;dr:
+
+> NIP.IO maps <anything>.<IP Address>.nip.io to the corresponding <IP Address>, even 127.0.0.1.nip.io maps to 127.0.0.1
+
+Each user's OCP cluster is configured with a subdomain configuration of <INFRA_NODE_IP>.nip.io. Any routes they create will have DNS records of <APP>-<NAMESPACE>.<INFRA_NODE_IP>.nip.io. This should resolve cleanly back to the IP address of the infra node where the router lives.
+
+In short, DNS should _just work_, unless for some reason wherever you are blocks the nip.io domain. 
