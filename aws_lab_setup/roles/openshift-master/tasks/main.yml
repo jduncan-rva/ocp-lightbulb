@@ -6,6 +6,12 @@
     group: root
     mode: 0400
 
+- name: set infra_node facts
+  set_fact:
+    infra_node: "{{ hostvars[groups[item.username + '_nodes'][0]] }}"
+  with_items: "{{ users }}"
+  when: "{{ inventory_hostname in groups[item.username + '_masters'] }}"
+
 - name: deploy ocp install template
   template:
     src: ocp-install.yml.j2
@@ -39,7 +45,8 @@
 - name: setup xip.io domain
   lineinfile:
     regexp: 'subdomain:'
-    line: "  subdomain: '{{ hostvars[groups[item.username + '_nodes'][0]]['ansible_ec2_public_ipv4'] + '.xip.io' }}'"
+    line: "  subdomain: '{{ hostvars[groups[item.username + '_nodes'][0]]['ansible_ec2_public_ipv4'] + '.nip.io' }}'"
+    dest: /etc/origin/master/master-config.yaml
   with_items: "{{ users }}"
   when: "{{ inventory_hostname in groups[item.username + '_masters'] }}"
 
