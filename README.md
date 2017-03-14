@@ -62,7 +62,7 @@ The default configuration, ocp-lightbulb uses the _nip.io_ domain for each clust
 ### tl;dr:
 
 > NIP.IO maps <anything>.<IP Address>.nip.io to the corresponding <IP Address>, even 127.0.0.1.nip.io maps to 127.0.0.1
->           - http://nip.io
+> - http://nip.io
 
 Each user's OCP cluster is configured with a subdomain configuration of <INFRA_NODE_IP>.nip.io. Any routes they create will have DNS records of <APP>-<NAMESPACE>.<INFRA_NODE_IP>.nip.io. This should resolve cleanly back to the IP address of the infra node where the router lives.
 
