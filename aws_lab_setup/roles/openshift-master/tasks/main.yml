@@ -42,7 +42,7 @@
     line: '      file: {{ htpasswd_file }}'
     dest: /etc/origin/master/master-config.yaml
 
-- name: setup xip.io domain
+- name: setup nip.io domain
   lineinfile:
     regexp: 'subdomain:'
     line: "  subdomain: '{{ hostvars[groups[item.username + '_nodes'][0]]['ansible_ec2_public_ipv4'] + '.nip.io' }}'"
