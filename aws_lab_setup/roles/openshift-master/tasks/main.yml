@@ -22,13 +22,13 @@
 - name: deploy OpenShift
   command: atomic-openshift-installer -u -c /tmp/ocp-install.yml install
 
-- name: create htpasswd file
-  template:
-    src: htpasswd
-    dest: "{{ htpasswd_file }}"
-    owner: root
-    group: root
-    mode: 0644
+# - name: create htpasswd file
+#   template:
+#     src: htpasswd
+#     dest: "{{ htpasswd_file }}"
+#     owner: root
+#     group: root
+#     mode: 0644
 
 - name: add htpasswd auth method to openshift config
   lineinfile:
@@ -42,10 +42,13 @@
     line: '      file: {{ htpasswd_file }}'
     dest: /etc/origin/master/master-config.yaml
 
+- name: create admin user in htpasswd
+  shell: echo {{ admin_user_password }} | htpasswd -i -c {{ htpasswd_file }} admin
+
 - name: give admin user cluster-admin access for OCP
   command: oadm policy add-cluster-role-to-user cluster-admin admin
 
-- name: create lab user for each student
+- name: create lab user for each student in htpasswd
   shell: echo {{ lab_user_password }} | htpasswd -i -c {{ htpasswd_file }} {{ item.username }}
   with_items: "{{ users }}"
   when: "{{ inventory_hostname in groups[item.username + '_masters'] }}"

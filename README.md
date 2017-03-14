@@ -41,6 +41,8 @@ rhn_user: RHN_USER                                   # RHN username to regiser i
 rhn_pass: rhn_pass                                   # RHN password to register instances with
 ssh_key: /path/to/ssh/key                            # private key to put on OCP master. it will assume the public key to add to all hosts will be /the/same/path.pub
 rhsm_pool_id: XXXX-XXXXXXXXXXX                       # Red Hat Pool ID to add your nodes to. This must include the OpenShift channels
+lab_user_password: ChangeMe
+admin_user_password: admin
 ```
 
 ## Amazon Setup
@@ -71,10 +73,12 @@ In short, DNS should _just work_, unless for some reason wherever you are blocks
 
 By default, two users are created
 
-* admin
+* *admin*
 
-This user has the password 'admin'. It is given the `cluster-admin` role, which means it is effectively all-powerful in the cluster.
+This user has the password 'admin' by default. this can be overridden by setting `admin_user_password` in `extra_vars.yml` It is given the `cluster-admin` role, which means it is effectively all-powerful in the cluster.
 
-* username
+* *username*
 
 Each student also has a username created that maps to their username value in users.yml. This user is not associated with any roles by default at this point, but is added to the htpasswd file so they can log in.
+
+The lab user's password defaults to `RedHat01`. This can be overridden by setting `lab_user_password` in `extra_vars.yml`.
